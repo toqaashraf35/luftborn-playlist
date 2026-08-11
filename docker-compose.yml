@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: playlist_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: playlist_user
+      POSTGRES_PASSWORD: playlist_pass
+      POSTGRES_DB: playlist_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U playlist_user -d playlist_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
