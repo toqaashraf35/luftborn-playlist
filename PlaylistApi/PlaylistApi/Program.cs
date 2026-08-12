@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PlaylistApi.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using PlaylistApi.Repositories;
+using PlaylistApi.Services;
 
 namespace PlaylistApi
 {
@@ -18,7 +20,10 @@ namespace PlaylistApi
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 
             var app = builder.Build();
 

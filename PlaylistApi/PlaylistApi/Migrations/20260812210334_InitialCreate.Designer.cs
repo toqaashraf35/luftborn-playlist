@@ -12,7 +12,7 @@ using PlaylistApi.Data;
 namespace PlaylistApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260811234405_InitialCreate")]
+    [Migration("20260812210334_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,9 +40,8 @@ namespace PlaylistApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
