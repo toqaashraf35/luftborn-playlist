@@ -20,21 +20,7 @@ namespace PlaylistApi.Repositories
 
             return playlist;
         }
-
-        public async Task<bool> AddSongToPlaylist(int playlistId, Song song)
-        {
-            var playlist = await _context.Playlists.FindAsync(playlistId);
-            if (playlist == null)
-            {
-                return false;
-            }
-            song.PlaylistId = playlistId;
-            _context.Songs.Add(song);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
+        
         public async Task<List<Playlist>> GetPlaylistsByUserId(int userId)
         {
             var playlists = await _context.Playlists
@@ -43,6 +29,32 @@ namespace PlaylistApi.Repositories
                 .ToListAsync();
 
             return playlists;
+        }
+
+        public async Task<Playlist?> UpdatePlaylist(int playlistId, string name)
+        {
+            var playlist = await _context.Playlists
+                .Include(p => p.Songs)
+                .FirstOrDefaultAsync(p => p.Id == playlistId);
+
+            if (playlist == null) return null;
+
+            playlist.Name = name;
+            playlist.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return playlist;
+        }
+
+        public async Task<bool> DeletePlaylist(int playlistId)
+        {
+            var playlist = await _context.Playlists.FindAsync(playlistId);
+            if (playlist == null) return false;
+
+            _context.Playlists.Remove(playlist);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

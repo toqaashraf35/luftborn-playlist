@@ -6,5 +6,6 @@ public class Playlist
 	public string Name { get; set; } = string.Empty;
 	public int UserId { get; set; }
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-	public List<Song> Songs { get; set; } = new();
+    public DateTime? UpdatedAt { get; set; }
+    public List<Song> Songs { get; set; } = new();
 }

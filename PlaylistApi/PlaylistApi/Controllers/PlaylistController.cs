@@ -21,23 +21,38 @@ namespace PlaylistApi.Controllers
             var result = await _service.CreatePlaylist(dto);
             return Ok(result);
         }
-        
-        [HttpPost("{playlistId}/songs")]
-        public async Task<IActionResult> AddSongToPlaylist(int playlistId, SongRequestDto dto)
-        {
-            var result = await _service.AddSongToPlaylist(playlistId, dto);
-            if (!result)
-            {
-                return NotFound($"Playlist with Id {playlistId} not found.");
-            }
-            return Ok("Song added successfully!");
-        }
-        
+
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetPlaylistsByUserId(int userId)
         {
             var result = await _service.GetPlaylistsByUserId(userId);
             return Ok(result);
+        }
+
+        [HttpPatch("{playlistId}")]
+        public async Task<IActionResult> UpdatePlaylist(int playlistId, [FromBody] string name)
+        {
+            var result = await _service.UpdatePlaylist(playlistId, name);
+
+            if (result == null)
+            {
+                return NotFound($"Playlist with id {playlistId} not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{playlistId}")]
+        public async Task<IActionResult> DeletePlaylist(int playlistId)
+        {
+            var success = await _service.DeletePlaylist(playlistId);
+
+            if (!success)
+            {
+                return NotFound($"Playlist with id {playlistId} not found.");
+            }
+
+            return Ok($"Playlist with id {playlistId} deleted successfully.");
         }
     }
 }

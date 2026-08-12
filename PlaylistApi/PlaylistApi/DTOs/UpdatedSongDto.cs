@@ -1,13 +1,9 @@
 ﻿namespace PlaylistApi.DTOs
 {
-    public class SongResponseDto
+    public class UpdatedSongDto
     {
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Artist { get; set; } = string.Empty;
         public int DurationInSeconds { get; set; }
-        public DateTime AddedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-
     }
 }

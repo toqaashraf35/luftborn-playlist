@@ -25,6 +25,9 @@ namespace PlaylistApi
             builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 
+            builder.Services.AddScoped<ISongRepository, SongRepository>();
+            builder.Services.AddScoped<ISongService, SongService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

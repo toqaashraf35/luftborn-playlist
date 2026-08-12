@@ -20,30 +20,23 @@ namespace PlaylistApi.Services
                 Name = dto.Name,
                 UserId = dto.UserId
             };
+
             var created = await _repository.CreatePlaylist(playlist);
+
             return new PlaylistResponseDto
             {
                 Id = created.Id,
                 Name = created.Name,
                 CreatedAt = created.CreatedAt,
+                UpdatedAt = created.UpdatedAt,
                 Songs = new List<SongResponseDto>()
             };
-        }
-
-        public async Task<bool> AddSongToPlaylist(int playlistId, SongRequestDto dto)
-        {
-            var song = new Song
-            {
-                Title = dto.Title,
-                Artist = dto.Artist,
-                DurationInSeconds = dto.DurationInSeconds
-            };
-            return await _repository.AddSongToPlaylist(playlistId, song);
         }
 
         public async Task<List<PlaylistResponseDto>> GetPlaylistsByUserId(int userId)
         {
             var playlists = await _repository.GetPlaylistsByUserId(userId);
+
             return playlists.Select(p => new PlaylistResponseDto
             {
                 Id = p.Id,
@@ -54,9 +47,39 @@ namespace PlaylistApi.Services
                     Id = s.Id,
                     Title = s.Title,
                     Artist = s.Artist,
-                    DurationInSeconds = s.DurationInSeconds
+                    DurationInSeconds = s.DurationInSeconds,
+                    AddedAt = s.AddedAt,
+                    UpdatedAt = s.UpdatedAt
                 }).ToList()
             }).ToList();
+        }
+
+        public async Task<PlaylistResponseDto?> UpdatePlaylist(int playlistId, string name)
+        {
+            var updatedPlaylist = await _repository.UpdatePlaylist(playlistId, name);
+            if (updatedPlaylist == null) return null;
+
+            return new PlaylistResponseDto
+            {
+                Id = updatedPlaylist.Id,
+                Name = updatedPlaylist.Name,
+                CreatedAt = updatedPlaylist.CreatedAt,
+                UpdatedAt = updatedPlaylist.UpdatedAt,
+                Songs = updatedPlaylist.Songs.Select(s => new SongResponseDto
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Artist = s.Artist,
+                    DurationInSeconds = s.DurationInSeconds,
+                    AddedAt = s.AddedAt,
+                    UpdatedAt = s.UpdatedAt,
+                }).ToList()
+            };
+        }
+
+        public async Task<bool> DeletePlaylist(int playlistId)
+        {
+            return await _repository.DeletePlaylist(playlistId);
         }
     }
 }
