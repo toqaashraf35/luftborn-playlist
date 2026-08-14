@@ -32,9 +32,20 @@ namespace PlaylistApi.Repositories
             var song = await _context.Songs.FindAsync(songId);
             if (song == null) return null;
 
-            song.Title = updatedSong.Title;
-            song.Artist = updatedSong.Artist;
-            song.DurationInSeconds = updatedSong.DurationInSeconds;
+            if (updatedSong.Title != null)
+            {
+                song.Title = updatedSong.Title;
+            }
+
+            if (updatedSong.Artist != null)
+            {
+                song.Artist = updatedSong.Artist;
+            }
+
+            if (updatedSong.DurationInSeconds.HasValue)
+            {
+                song.DurationInSeconds = updatedSong.DurationInSeconds.Value;
+            }
             song.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
