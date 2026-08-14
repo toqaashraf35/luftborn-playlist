@@ -86,10 +86,31 @@ The project follows a **layered architecture**:
 
 ## How to Run
 
-*(To be completed once dockerization is finished)*
+## Running with Docker
+
+### Prerequisites
+
+- Docker Desktop
+
+### Run the application
+
+Clone the repository:
+
+```bash
+git clone https://github.com/toqaashraf35/luftborn-playlist.git
+cd playlistAPI
+```
+
+### Run:
+
+docker compose up --build
+
+### The API will be available at:
+
+http://localhost:8081/swagger
 
 ## Additional Info
 
-- **Repository:** _[add link]_
-- **Folder name:** _[add folder name]_
+- **Repository:** https://github.com/toqaashraf35/luftborn-playlist.git
+- **Folder name:** playlistAPI
 - _[add any other notes, e.g. full dockerization, tests]_

@@ -17,5 +17,20 @@ services:
       timeout: 5s
       retries: 5
 
+  api:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: playlist_api
+      restart: unless-stopped
+      ports:
+        - "8081:8080"
+      environment:
+        ASPNETCORE_ENVIRONMENT: Development
+        ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=playlist_db;Username=playlist_user;Password=playlist_pass"
+      depends_on:
+        postgres:
+          condition: service_healthy
+
 volumes:
   pgdata:
