@@ -6,7 +6,7 @@ using PlaylistApi.Services;
 
 namespace PlaylistApi
 {
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {
@@ -32,8 +32,12 @@ namespace PlaylistApi
 
             using (var scope = app.Services.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                dbContext.Database.Migrate();
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+                if (context.Database.IsRelational())
+                {
+                    context.Database.Migrate();
+                }
             }
 
             // Configure the HTTP request pipeline.
@@ -51,6 +55,8 @@ namespace PlaylistApi
             app.MapControllers();
 
             app.Run();
+
         }
+
     }
 }
